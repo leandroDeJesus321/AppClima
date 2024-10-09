@@ -18,11 +18,11 @@ const NatureMeditate = () =>{
                     <FlatList 
                     data={MEDITATION_DATA} 
                     className="mb-20"
-                    keyExtractor={(item)=> item.id.toString}
+                    keyExtractor={(item)=> item.id.toString()}
                     showsVerticalScrollIndicator={false}
                     renderItem={({item})=>(
                         <Pressable
-                            onPress={()=>console.log(Pressionado)}
+                            onPress={()=>console.log("Pressionado")}
                             className="h-48 my-3 rounded-md overflow-hidden"
                         >
                             <ImageBackground
@@ -30,9 +30,9 @@ const NatureMeditate = () =>{
                                 resizeMode="cover"
                                 className="flex-1 rounded-lg justify-center"
                             >
-                                <text>
+                                <Text>
                                     {item.title}
-                                </text>
+                                </Text>
                             </ImageBackground>
                         </Pressable>
                     )}
