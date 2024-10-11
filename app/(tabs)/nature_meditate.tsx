@@ -26,7 +26,7 @@ const NatureMeditate = () =>{
                     showsVerticalScrollIndicator={false}
                     renderItem={({item})=>(
                         <Pressable
-                            onPress={()=>console.log("Pressionado")}
+                            onPress={()=>router.push(`/meditate/${item.id}`)}
                             className="h-48 my-3 rounded-md overflow-hidden"
                         >
                             <ImageBackground
