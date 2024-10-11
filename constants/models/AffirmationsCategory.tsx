@@ -1,9 +1,9 @@
 export interface AffirmationsCategory{
     title: string;
-    data: GalleryPreviuewData[];
+    data: GalleryPreviewData[];
 }
 
-export interface GalleryPreviuewData{
+export interface GalleryPreviewData{
     id: number;
     text: string;
     image: any;

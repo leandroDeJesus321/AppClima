@@ -1,12 +1,12 @@
 import {View, Text, FlatList, Pressable, Image} from "react-native";
 import React from "react";
-import { GalleryPreviuewData } from "@/constants/models/AffirmationsCategory";
+import { GalleryPreviewData } from "@/constants/models/AffirmationsCategory";
 import { Link } from "expo-router";
 
 
 interface GuidedAffirmationsGalleryProps{
     title: string;
-    previews: GalleryPreviuewData[];
+    previews: GalleryPreviewData[];
 }
 
 const GuidedAffirmationsGallery = ({title, previews,}: GuidedAffirmationsGalleryProps) =>{
