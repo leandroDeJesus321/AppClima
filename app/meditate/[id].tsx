@@ -7,11 +7,23 @@ import { router, useLocalSearchParams } from 'expo-router'
 import AntDesign from '@expo/vector-icons/AntDesign';
 import CustomButton from '@/components/custombutton'
 
+import { MEDITATION_DATA, AUDIO_FILES } from '@/constants/meditation-data'
+import { Audio } from 'expo-av';
+
 const Meditate = () => {
 
+    // Id para carregar imagem do da lista
     const {id} = useLocalSearchParams();
+
+    // constantes para formatar temporizador.
     const [secondsRemaining, setSecondsRemaining] = useState(10);
+    // constantes para ativar e desativar o modo de meditação
     const [isMeditating, setMeditating] = useState(false);
+
+    // Constantes para carregar música na página.
+    const [audioSound, setSound] = useState<Audio.Sound>();
+    const [ isPlayingAudio, setPlayingAudio] = useState(false);
+
 
     useEffect(()=>{
         let timerId: NodeJS.Timeout;
@@ -30,12 +42,63 @@ const Meditate = () => {
 
         return () =>{
             clearTimeout(timerId);
+
         }
 
-    },[secondsRemaining, isMeditating])
+    },[secondsRemaining, isMeditating]);
 
-    const formattedTimeMinutes = String(Math.floor(secondsRemaining / 60)).padStart(2,"0")
-    const formattedTimeSeconds = String(Math.floor(secondsRemaining % 60)).padStart(2,"0")
+    useEffect(()=>{
+        return () =>{
+            audioSound?.unloadAsync();
+        }
+        
+    },[audioSound])
+
+
+    // Função para pausar/ativar o som.
+    const toggleSound = async () =>{
+        const sound = audioSound ? audioSound : await initilizeSound();
+        const status = await sound?.getStatusAsync();
+
+        if(status?.isLoaded && !isPlayingAudio){
+            await sound.playAsync();
+            setPlayingAudio(true);
+
+        }else{
+            await sound.pauseAsync();
+            setPlayingAudio(false);
+        }
+
+    }
+
+    // Função para inicializar o som.
+    const initilizeSound = async () =>{
+        const audioFileName = MEDITATION_DATA[Number(id) - 1].audio;
+
+        const { sound } = await Audio.Sound.createAsync(
+            AUDIO_FILES[audioFileName]
+        );
+
+        setSound(sound);
+        return sound;
+
+    }
+
+    // Formatar os números do cronometro.
+    const formattedTimeMinutes = String(Math.floor(secondsRemaining / 60)).padStart(2,"0");
+    const formattedTimeSeconds = String(Math.floor(secondsRemaining % 60)).padStart(2,"0");
+
+    const toggleMeditationSessionStatus = async () =>{
+        if(secondsRemaining === 0){
+            setSecondsRemaining(10);
+
+        }
+
+        setMeditating(!isMeditating)
+        await toggleSound();
+    }
+
+
 
     return (
         <View className='flex-1'>
@@ -62,7 +125,7 @@ const Meditate = () => {
                     <View className='mb-5'>
                         <CustomButton
                             title='Start Meditation'
-                            onPress={()=> setMeditating(true)}
+                            onPress={toggleMeditationSessionStatus}
                         >
 
                         </CustomButton>
