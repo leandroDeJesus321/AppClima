@@ -1,6 +1,8 @@
 import { Slot, SplashScreen, Stack } from "expo-router";
 import { useFonts } from 'expo-font';
 import { useEffect } from "react";
+import React from "react";
+import TimerProvider from "@/context/TimerContext";
 
 // Vai impedir a tela de ficar escondida enquanto carrega todas as fontes.
 SplashScreen.preventAutoHideAsync();
@@ -26,12 +28,18 @@ export default function RootLayout() {
   }
 
   return (
-    <Stack>
+    <TimerProvider>
+      <Stack>
       <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
       <Stack.Screen name="index" options={{ headerShown: false }} />
       <Stack.Screen   
         name="meditate/[id]" 
         options={{ headerShown: false }} />
-    </Stack>
+      <Stack.Screen   
+        name="(modal)/adjust_meditation_duration" 
+        options={{ headerShown: false, presentation: "modal" }} />
+      </Stack>
+    </TimerProvider>
+    
   );
 }
